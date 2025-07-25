@@ -3045,7 +3045,7 @@ void Timer10ms_singlerun(void) {
                 ActivationMode = 30;                                        // Activation mode is triggered if state C is not entered in 30 seconds.
                 AccessTimer = 0;
             } else setErrorFlags(LESS_6A);                                   // Not enough power available
-        } else if (pilot == PILOT_9V && State != STATE_B1 && State != STATE_COMM_B && AccessStatus == ON) {
+        } else if (pilot == PILOT_9V && State != STATE_B1 && State != STATE_COMM_B && (AccessStatus == ON || AccessStatus == PAUSE)) {
             setState(STATE_B1);
         }
     } // State == STATE_A || State == STATE_COMM_B || State == STATE_B1
