@@ -449,6 +449,24 @@ const char * getErrorNameWeb(uint8_t ErrorCode) {
     else return "Multiple Errors";
 }
 
+// Get J1772 state name from existing State variable
+const char * getJ1772StateName(uint8_t stateValue) {
+    switch(stateValue) {
+        default:
+        case STATE_A:
+            return "A";
+        case STATE_B:
+        case STATE_B1:
+        case STATE_COMM_C:
+        case STATE_COMM_C_OK:
+             return "B";
+        case STATE_C:
+        case STATE_C1:
+             return "C";
+        case STATE_D:
+            return "D";
+    }
+}
 
 void getButtonState() {
     // Sample the three < o > buttons.
@@ -1288,6 +1306,7 @@ bool handle_URI(struct mg_connection *c, struct mg_http_message *hm,  webServerR
         }
         String evstate = StrStateNameWeb[State];
         String error = getErrorNameWeb(ErrorFlags);
+        String J1772_state = getJ1772StateName(State);
         int errorId = getErrorId(ErrorFlags);
 
         if (ErrorFlags & LESS_6A) {
@@ -1333,6 +1352,7 @@ bool handle_URI(struct mg_connection *c, struct mg_http_message *hm,  webServerR
         doc["evse"]["custombutton"] = CustomButton;
         doc["evse"]["solar_stop_timer"] = SolarStopTimer;
         doc["evse"]["state"] = evstate;
+        doc["evse"]["j1772_state"] = J1772_state;
         doc["evse"]["state_id"] = State;
         doc["evse"]["error"] = error;
         doc["evse"]["error_id"] = errorId;
